@@ -1,6 +1,7 @@
 <script setup>
 import {reactive} from "vue";
-import axios from "axios";
+import useAuth from "@/composable/useAuth.js";
+import Navigation from "@/components/navigation.vue";
 
 const form = reactive({
     email: 'admin@admin.com',
@@ -8,14 +9,16 @@ const form = reactive({
 
 });
 
+const {login: loginAuth, errors} = useAuth();
+
 const login = async ()=>{
-    await axios.get('/sanctum/csrf-cookie');
-    const response = await axios.post('/login', form);
-    console.log(response);
+    loginAuth(form)
 }
+
 </script>
 
 <template>
+    <navigation />
     <form  @submit.prevent="login">
         <input
             v-model="form.email"
@@ -25,6 +28,8 @@ const login = async ()=>{
             type="password" name="password" id="password" placeholder="Password">
         <button type="submit">login</button>
     </form>
+    <p v-if="errors.email">{{errors.email[0]}}</p>
+    <p v-if="errors.password">{{errors.password[0]}}</p>
 </template>
 
 <style scoped></style>
