@@ -32,4 +32,6 @@ const login = async ()=>{
     <p v-if="errors.password">{{errors.password[0]}}</p>
 </template>
 
-<style scoped></style>
+<style scoped>
+@plugin "@tailwindcss/forms";
+</style>
